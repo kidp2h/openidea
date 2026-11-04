@@ -6074,6 +6074,7 @@
   "Default (the module's JDK)": "默认（模块的 JDK）",
   "Use classpath of module": "使用模块的类路径",
   "Find by main class": "按主类查找",
+<<<<<<< HEAD
   "Pull Members Up…": "上拉成员…",
   "Push Members Down…": "下推成员…",
   "Pull Members Up": "上拉成员",
@@ -6183,5 +6184,10 @@
   "Plugin update available": "有插件可更新",
   "{length} plugin updates available": "{length} 个插件可更新",
   "Updated {updated} plugins": "已更新 {updated} 个插件",
-  "This version is signed with a different key than the installed one, and the publisher's earlier key doesn't vouch for it. Only continue if you know the publisher changed keys.": "此版本的签名密钥与已安装的版本不同，且发布者之前的密钥没有为它背书。只有在确认发布者更换了密钥时才继续。"
+  "This version is signed with a different key than the installed one, and the publisher's earlier key doesn't vouch for it. Only continue if you know the publisher changed keys.": "此版本的签名密钥与已安装的版本不同，且发布者之前的密钥没有为它背书。只有在确认发布者更换了密钥时才继续。",
+  "Unsafe query: 'Delete' statement without 'where' clears all data in the table": "不安全的查询：没有 'where' 的 'Delete' 语句会清除表中的所有数据",
+  "Unsafe query: 'Delete' statement clears all data in the table because 'where' condition is always true": "不安全的查询：'where' 条件始终为真，'Delete' 语句会清除表中的所有数据",
+  "Unsafe query: 'Update' statement without 'where' updates all rows in the table": "不安全的查询：没有 'where' 的 'Update' 语句会更新表中的所有行",
+  "Unsafe query: 'Update' statement updates all rows in the table because 'where' condition is always true": "不安全的查询：'where' 条件始终为真，'Update' 语句会更新表中的所有行",
+  "Execute and Suppress": "执行并不再提示"
 }

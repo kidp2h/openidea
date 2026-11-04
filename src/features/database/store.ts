@@ -39,6 +39,7 @@ import type { ExportData, ExportFormat } from "./export";
 import type { DbObjectRef } from "./objects";
 import { formatted } from "./sql/format";
 import { bindParams, findParams } from "./sql/params";
+import { unsafeStatement, type UnsafeStatement } from "./sql/unsafe";
 import { tx } from "@/platform/i18n";
 
 export const DB_TOOL_WINDOW = "database";
@@ -766,11 +767,15 @@ async function withParams(statements: SqlStatement[], driver: DbDriver): Promise
   return statements.map((st, i) => ({ ...st, text: bindParams(st.text, found[i]!, values) }));
 }
 
+/** Asks whether to run an unsafe statement (see `sql/unsafe`); false cancels the run. */
+export type ConfirmUnsafe = (statement: SqlStatement, unsafe: UnsafeStatement) => Promise<boolean>;
+
 export async function executeConsole(
   path: string,
   text: string,
   from: number,
   to: number,
+  confirmUnsafe?: ConfirmUnsafe,
 ): Promise<DbStatementOutcome[]> {
   const id = consoleSource(path);
   if (!id) {
@@ -784,7 +789,7 @@ export async function executeConsole(
     });
     return [];
   }
-  const statements = await consoleStatements(id, text, from, to);
+  const statements = await consoleStatements(id, text, from, to, confirmUnsafe);
   if (!statements.length) return [];
   const prev = useDatabase.getState().running[path];
   if (prev) void commands.cancelRequest(prev);
@@ -829,10 +834,22 @@ export async function executeConsole(
 }
 
 /** The statements of console `path` to run or explain: the selection's, else the one at `from`, parameters bound. */
-async function consoleStatements(id: string, text: string, from: number, to: number): Promise<SqlStatement[]> {
+async function consoleStatements(
+  id: string,
+  text: string,
+  from: number,
+  to: number,
+  confirmUnsafe?: ConfirmUnsafe,
+): Promise<SqlStatement[]> {
   const statements: SqlStatement[] = await call(commands.dbStatements(id, text, from, to));
   if (!statements.length) return [];
-  return withParams(statements, sourceById(id)?.driver ?? "sqlite");
+  const driver = sourceById(id)?.driver ?? "sqlite";
+  if (confirmUnsafe)
+    for (const st of statements) {
+      const unsafe = unsafeStatement(st.text, driver);
+      if (unsafe && !(await confirmUnsafe(st, unsafe))) return [];
+    }
+  return withParams(statements, driver);
 }
 
 const PLAN_TITLE = "Query Plan";
