@@ -367,6 +367,8 @@ html {
   --bg-progress-track: #40434a;
   --bg-editor: var(--bg-island);
   --bg-editor-gutter: var(--bg-editor);
+  /* Every other row of data grids (IDEA's Table.stripeColor); follows the theme's editor colours. */
+  --bg-table-stripe: color-mix(in srgb, var(--fg-strong) 4%, var(--bg-editor));
   --project-gradient-strength: 22%;
 
   color-scheme: dark;

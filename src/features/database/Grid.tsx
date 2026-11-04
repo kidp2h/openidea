@@ -419,6 +419,7 @@ export function Grid(props: GridProps) {
               role="row"
               className={clsx(
                 styles.gridRow,
+                r % 2 === 1 && styles.rowStriped,
                 state === "deleted" && styles.rowDeleted,
                 state === "inserted" && styles.rowInserted,
               )}

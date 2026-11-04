@@ -175,3 +175,22 @@ describe("multi-line database cells", () => {
     expect(onEdit).not.toHaveBeenCalled();
   });
 });
+describe("result grid look", () => {
+  const columns = [
+    { name: "city", type: "text" },
+    { name: "n", type: "int" },
+  ];
+  const data = [
+    ["Shanghai", "1"],
+    ["Beijing", "2"],
+    ["Shenzhen", "3"],
+    ["Hangzhou", "4"],
+  ];
+  const value = (r: number, c: number) => data[r]?.[c] ?? null;
+
+  it("stripes every other row", () => {
+    render(<Grid columns={columns} rowCount={4} value={value} />);
+    const rows = screen.getAllByRole("row").slice(1);
+    expect(rows.map((r) => /rowStriped/.test(r.className))).toEqual([false, true, false, true]);
+  });
+});

@@ -90,6 +90,9 @@
   text-overflow: ellipsis;
   user-select: none;
 }
+.rowStriped {
+  background: var(--bg-table-stripe);
+}
 .cellSelected {
   background: var(--bg-editor-selection);
 }
